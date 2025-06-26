@@ -8,6 +8,13 @@
         /* Подключение киберпанк-шрифтов */
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500&display=swap');
         
+        /* Сброс стандартных отступов */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         /* Стили для прелоадера */
         #preloader {
             position: fixed;
@@ -15,12 +22,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0a0a12; /* Тёмный фон */
+            background: #0a0a12;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            overflow: hidden;
+            z-index: 1000; /* Высокий z-index */
         }
         
         .fullscreen-gif {
@@ -30,25 +36,23 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        #secret-gif, #stand-gif {
             display: none;
         }
         
-        #gif1, #gif2 {
-            display: none;
-        }
-        
-        #gif1.active, #gif2.active {
+        #secret-gif.active, #stand-gif.active {
             display: block;
         }
 
-        /* Киберпанк стиль для сайта */
+        /* Основные стили сайта */
         body {
             background: 
                 linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('back.png');
+                url('back.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
@@ -57,14 +61,219 @@
             justify-content: center;
             font-family: 'Rajdhani', sans-serif;
             color: #e0e0ff;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Контейнер контента */
+        #content {
+            display: none; /* Изначально скрыт */
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            z-index: 100; /* Выше фона */
+            position: relative;
         }
         
         .message-container {
             text-align: center;
-            max-width: 800px;
-            padding: 40px;
             position: relative;
             z-index: 10;
         }
         
-        /* Эффект голог
+        /* Эффект голографического текста */
+        .message {
+            font-size: 26px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 
+                0 0 5px rgba(100, 255, 255, 0.5),
+                0 0 15px rgba(100, 200, 255, 0.3);
+            position: relative;
+            letter-spacing: 0.5px;
+            background-color: rgba(0, 0, 20, 0.3); /* Легкий фон для читаемости */
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        /* Неоновая подпись */
+        .signature {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            margin-top: 40px;
+            color: #4df0ff;
+            text-shadow: 
+                0 0 10px rgba(77, 240, 255, 0.7),
+                0 0 20px rgba(77, 240, 255, 0.4);
+            letter-spacing: 1px;
+        }
+        
+        /* Кибер-логотип */
+        .copyright {
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff4da6;
+            text-shadow: 
+                0 0 10px rgba(255, 77, 166, 0.7),
+                0 0 20px rgba(255, 77, 166, 0.4);
+            position: relative;
+        }
+        
+        /* Анимированный курсор */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 26px;
+            background-color: #ff4da6;
+            margin-left: 5px;
+            vertical-align: middle;
+            animation: blink 1s infinite, pulse 1.5s infinite;
+            box-shadow: 0 0 10px rgba(255, 77, 166, 0.7);
+        }
+        
+        /* Эффекты */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(255, 77, 166, 0.7); }
+            50% { box-shadow: 0 0 20px rgba(255, 77, 166, 1); }
+            100% { box-shadow: 0 0 10px rgba(255, 77, 166, 0.7); }
+        }
+        
+        /* Голографические линии */
+        .holographic-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1; /* Ниже текста */
+            opacity: 0.3;
+        }
+        
+        .line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #4df0ff, transparent);
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        
+        /* Эффект частиц */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2; /* Между фоном и текстом */
+        }
+    </style>
+</head>
+<body>
+    <!-- Прелоадер с гифками -->
+    <div id="preloader">
+        <img id="secret-gif" class="fullscreen-gif" src="secret.gif" alt="Loading">
+        <img id="stand-gif" class="fullscreen-gif" src="stand.gif" alt="Loading">
+    </div>
+    
+    <!-- Основной контент -->
+    <div id="content">
+        <div class="message-container">
+            <!-- Голографические линии -->
+            <div class="holographic-lines">
+                <div class="line" style="width: 80%; left: 10%; animation-delay: 0s"></div>
+                <div class="line" style="width: 60%; left: 20%; animation-delay: -2s"></div>
+                <div class="line" style="width: 70%; left: 15%; animation-delay: -4s"></div>
+                <div class="line" style="width: 50%; left: 25%; animation-delay: -6s"></div>
+            </div>
+            
+            <div class="message">
+                User! You shouldn't be here right now. Please come back after installing the driver updates and all necessary implants.
+            </div>
+            <div class="signature">With respect and best wishes,</div>
+            <div class="copyright">Amplitude©!<span class="cursor"></span></div>
+        </div>
+    </div>
+
+    <script>
+        // Убедимся, что DOM полностью загружен
+        document.addEventListener('DOMContentLoaded', function() {
+            // Показываем первую гифку сразу
+            document.getElementById('secret-gif').style.display = 'block';
+            document.getElementById('secret-gif').classList.add('active');
+            
+            // Через 5 секунд показываем вторую гифку
+            setTimeout(function() {
+                document.getElementById('secret-gif').classList.remove('active');
+                document.getElementById('stand-gif').classList.add('active');
+            }, 5000);
+            
+            // Через 10 секунд показываем основной контент
+            setTimeout(function() {
+                document.getElementById('preloader').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                
+                // Создаем эффект частиц
+                createParticles();
+            }, 10000);
+        });
+        
+        // Функция для создания частиц
+        function createParticles() {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles';
+            document.body.appendChild(particlesContainer);
+            
+            // Создаем 50 частиц
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 3 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = i % 2 === 0 ? '#4df0ff' : '#ff4da6';
+                particle.style.borderRadius = '50%';
+                particle.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px ${particle.style.backgroundColor}`;
+                
+                // Начальная позиция
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Анимация
+                particle.style.animation = `float ${Math.random() * 20 + 10}s linear infinite`;
+                
+                const keyframes = `
+                @keyframes float {
+                    0% {
+                        transform: translate(0, 0);
+                        opacity: ${Math.random() * 0.5 + 0.1};
+                    }
+                    100% {
+                        transform: translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh);
+                        opacity: 0;
+                    }
+                }`;
+                
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = keyframes;
+                document.head.appendChild(styleSheet);
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+    </script>
+</body>
+</html>
