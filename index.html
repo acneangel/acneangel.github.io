@@ -5,12 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AmplitudeIndustries</title>
     <style>
+        /* Стили для прелоадера */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff; /* Светлый фон */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        
+        .gif-container {
+            margin: 20px auto;
+        }
+
+        /* Светлая цветовая палитра */
         body {
-            /* Фон с затемнением 5% */
             background: 
-                linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
-                url('back.gif');
-            
+                linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+                url('back.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -20,50 +38,47 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Courier New', monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .message-container {
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 40px;
-            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.85); /* Светлый полупрозрачный фон */
+            padding: 30px;
+            border-radius: 12px;
             text-align: center;
-            max-width: 800px;
-            border: 1px solid rgba(255, 255, 0, 0.2);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            max-width: 700px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
         }
         
         .message {
-            color: #FFFF00;
-            font-size: 24px;
-            line-height: 1.6;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-            font-weight: bold;
-            letter-spacing: 0.5px;
+            color: #000; /* Чёрный текст */
+            font-size: 20px; /* Уменьшенный размер */
+            line-height: 1.5;
+            margin-bottom: 20px;
         }
         
         .signature {
-            color: #FFFF00;
-            margin-top: 30px;
-            font-size: 20px;
+            color: #333;
+            margin-top: 25px;
+            font-size: 18px;
             font-style: italic;
-            text-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
         }
         
         .copyright {
-            color: rgba(255, 255, 0, 0.7);
-            margin-top: 20px;
+            color: #555;
+            margin-top: 15px;
             font-size: 16px;
-            font-family: 'Courier New', monospace;
+            font-weight: bold;
         }
         
         /* Стиль для мигающего курсора */
         .cursor {
             display: inline-block;
-            width: 8px;
-            height: 24px;
-            background-color: #FFFF00;
-            margin-left: 4px;
+            width: 7px;
+            height: 20px;
+            background-color: #000;
+            margin-left: 3px;
             vertical-align: middle;
             animation: blink 1s infinite;
         }
@@ -73,15 +88,80 @@
             50% { opacity: 0; }
             100% { opacity: 1; }
         }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: #4A90E2;
+            transition: width 0.3s;
+        }
     </style>
 </head>
 <body>
-    <div class="message-container">
-        <div class="message">
-            User! You shouldn't be here right now. Please come back after installing the driver updates and all necessary implants.
+    <!-- Прелоадер с двумя гифками -->
+    <div id="preloader">
+        <div class="gif-container" id="gif1">
+            <img src="secret.gif" alt="Loading">
         </div>
-        <div class="signature">With respect and best wishes,</div>
-        <div class="copyright">Amplitude©!<span class="cursor"></span></div>
+        <div class="gif-container" id="gif2" style="display:none;">
+            <img src="stand.gif" alt="Loading">
+        </div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
     </div>
+    
+    <!-- Основной контент (изначально скрыт) -->
+    <div id="content" style="display:none;">
+        <div class="message-container">
+            <div class="message">
+                User! You shouldn't be here right now. Please come back after installing the driver updates and all necessary implants.
+            </div>
+            <div class="signature">With respect and best wishes,</div>
+            <div class="copyright">Amplitude©!<span class="cursor"></span></div>
+        </div>
+    </div>
+
+    <script>
+        let currentGif = 1;
+        const progressBar = document.getElementById('progress');
+        
+        // Функция для обновления прогресс-бара
+        function updateProgress(percent) {
+            progressBar.style.width = percent + '%';
+        }
+        
+        // Первая гифка показывается 5 секунд
+        setTimeout(function() {
+            document.getElementById('gif1').style.display = 'none';
+            document.getElementById('gif2').style.display = 'block';
+            currentGif = 2;
+            updateProgress(50); // Прогресс на 50%
+        }, 5000);
+        
+        // Через 10 секунд показываем основной контент
+        setTimeout(function() {
+            document.getElementById('preloader').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            updateProgress(100); // Прогресс на 100%
+        }, 10000);
+        
+        // Анимация прогресс-бара
+        let percent = 0;
+        const interval = setInterval(function() {
+            percent += 0.5;
+            updateProgress(percent);
+            if (percent >= 100) clearInterval(interval);
+        }, 50);
+    </script>
 </body>
 </html>
