@@ -38,7 +38,7 @@
             display: block;
         }
 
-        /* Основные стили - светлый корпоративный дизайн */
+        /* Основные стили */
         body {
             background-color: #f8f8f8;
             background-image: url('back.png');
@@ -58,7 +58,7 @@
             max-width: 800px;
             width: 100%;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -66,21 +66,69 @@
             overflow: hidden;
         }
         
+        /* Новый логотип "Всевидящий Имплант" */
         .logo {
             width: 120px;
             height: 120px;
             margin: 0 auto 25px;
-            background: linear-gradient(135deg, #6a9eff 0%, #a1c4fd 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(106, 158, 255, 0.3);
+            position: relative;
         }
         
+        .ai-eye {
+            width: 100px;
+            height: 100px;
+            border: 3px solid #4a90e2;
+            border-radius: 50%;
+            position: relative;
+            background: white;
+            margin: 0 auto;
+        }
+        
+        .pupil {
+            width: 30px;
+            height: 30px;
+            background: #0a0a12;
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+            left: 35px;
+        }
+        
+        .circuit-ring {
+            width: 70px;
+            height: 70px;
+            border: 2px dashed #4a90e2;
+            border-radius: 50%;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            animation: spin 8s linear infinite;
+        }
+        
+        .triangle-mark {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid #ff4da6;
+            position: absolute;
+            top: -10px;
+            left: 35px;
+            transform: rotate(180deg);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1) rotate(180deg); }
+            50% { opacity: 0.7; transform: scale(1.1) rotate(180deg); }
+            100% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        
+        /* Остальные стили */
         h1 {
             color: #333;
             font-size: 32px;
@@ -149,9 +197,35 @@
             }
             
             .logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .ai-eye {
                 width: 80px;
                 height: 80px;
-                font-size: 16px;
+            }
+            
+            .pupil {
+                width: 24px;
+                height: 24px;
+                top: 28px;
+                left: 28px;
+            }
+            
+            .circuit-ring {
+                width: 56px;
+                height: 56px;
+                top: 12px;
+                left: 12px;
+            }
+            
+            .triangle-mark {
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                border-bottom: 20px solid #ff4da6;
+                top: -8px;
+                left: 28px;
             }
             
             h1 {
@@ -194,7 +268,15 @@
     <!-- Основной контент -->
     <div id="content" style="display:none;">
         <div class="content-container">
-            <div class="logo">AI</div>
+            <!-- Новый логотип -->
+            <div class="logo">
+                <div class="ai-eye">
+                    <div class="pupil"></div>
+                    <div class="circuit-ring"></div>
+                    <div class="triangle-mark"></div>
+                </div>
+            </div>
+            
             <h1>Welcome to Amplitude Industries</h1>
             
             <div class="message-box">
@@ -212,11 +294,11 @@
             
             <div class="contact">
                 <p>For assistance with implant installation, contact our Neural Integration Support Team:</p>
-                <p><strong>support@amplitude-industries.com</strong> | +1 (800) 555-AIMP</p>
+                <p><strong>support@amplitude-industries.com</strong> | +1 (888) 555-AIMP</p>
             </div>
             
             <div class="copyright">
-                Amplitude Industries © 2093 "Improving Lives Through Cognitive Enhancement."<br>
+                Amplitude Industries © 2027. "Improving Lives Through Cognitive Enhancement."<br>
                 Amplitude Consciousness Network™ is a registered trademark.
             </div>
             
@@ -239,12 +321,12 @@
                 document.getElementById('secret-gif').style.display = 'block';
                 
                 // Меняем её через 5 секунд
-                setTimeout(function() {
+                setTimeout(() => {
                     document.getElementById('secret-gif').src = "stand.gif";
                 }, 5000);
                 
                 // Через 10 секунд показываем контент
-                setTimeout(function() {
+                setTimeout(() => {
                     document.getElementById('preloader').style.display = 'none';
                     document.getElementById('content').style.display = 'block';
                     document.body.style.backgroundColor = '#ffffff';
@@ -254,12 +336,12 @@
                 // Для десктопов: оригинальный подход
                 document.getElementById('secret-gif').style.display = 'block';
                 
-                setTimeout(function() {
+                setTimeout(() => {
                     document.getElementById('secret-gif').style.display = 'none';
                     document.getElementById('stand-gif').style.display = 'block';
                 }, 5000);
                 
-                setTimeout(function() {
+                setTimeout(() => {
                     document.getElementById('preloader').style.display = 'none';
                     document.getElementById('content').style.display = 'block';
                     document.body.style.backgroundColor = '#ffffff';
